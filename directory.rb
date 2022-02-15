@@ -24,7 +24,8 @@ def input_students
     birth_country = STDIN.gets.chomp
 
     # add the student hash to the array
-    @students << {name: name, cohort: cohort, height: height, birth_country: birth_country}
+    add_student_details(name, cohort, height, birth_country)
+    
     puts "Now we have #{@students.count} students"
     # return the array of students
   end
@@ -118,7 +119,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, height, birth_country = line.chomp.split(",")
-    @students << {name: name, cohort: cohort, height: height, birth_country: birth_country}
+    add_student_details(name, cohort, height, birth_country)
   end
   file.close
 end
@@ -133,6 +134,11 @@ def try_load_students
     puts "Sorry, #{filename} does not exist"
   end
 end
+
+def add_student_details(name, cohort, height, birth_country)
+  @students << {name: name, cohort: cohort, height: height, birth_country: birth_country}
+end
+
 
 try_load_students
 interactive_menu
