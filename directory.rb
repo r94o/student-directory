@@ -5,23 +5,23 @@ def input_students
   puts "To finish, just hit return twice"
   while true do
     puts "Enter Name"
-    name = gets.chomp
+    name = STDIN.gets.chomp
 
     if name.empty?
       break
     end
 
     puts "Enter Cohort"
-    cohort = gets.chomp
+    cohort = STDIN.gets.chomp
     if cohort.empty?
       cohort = "N/A"
     end
 
     puts "Enter Height in cm"
-    height = gets.chomp
+    height = STDIN.gets.chomp
 
     puts "Enter Country of Birth"
-    birth_country = gets.chomp
+    birth_country = STDIN.gets.chomp
 
     # add the student hash to the array
     @students << {name: name, cohort: cohort, height: height, birth_country: birth_country}
@@ -54,10 +54,10 @@ end
 
 def filter_students
   puts "Do you want to filter by cohort (y/n)"
-  filter = gets.chomp
+  filter = STDIN.gets.chomp
   if filter == "y"
     puts "Choose a cohort"
-    cohort = gets.chomp
+    cohort = STDIN.gets.chomp
     @students.filter! {|student| student[:cohort] == cohort}
   end
 end
@@ -65,7 +65,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -114,8 +114,8 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, height, birth_country = line.chomp.split(",")
     @students << {name: name, cohort: cohort, height: height, birth_country: birth_country}
@@ -123,4 +123,16 @@ def load_students
   file.close
 end
 
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} does not exist"
+  end
+end
+
+try_load_students
 interactive_menu
