@@ -37,7 +37,7 @@ def print_header
 end
 
 def print_students_list
-  if @students.length > 1
+  if @students.length >= 1
     @students.each do |student|
       puts "#{student[:name]} (#{student[:cohort]} cohort) Height: #{student[:height]}, born in #{student[:birth_country]}.".center(50)
     end
